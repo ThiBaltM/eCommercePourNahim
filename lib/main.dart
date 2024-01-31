@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:td_ecommerce/models/ProduitsList.dart';
 import 'package:td_ecommerce/models/produit.dart';
+import 'package:td_ecommerce/ui/panier.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,6 +58,17 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Panier()),
+              );
+            },
+            icon: Icon(Icons.shopping_cart),
+          )
+        ],
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
