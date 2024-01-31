@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:td_ecommerce/models/ProduitsList.dart';
 import 'package:td_ecommerce/models/produit.dart';
+import 'package:td_ecommerce/ui/produit_list.dart';
 
 void main() {
   runApp(const MyApp());
