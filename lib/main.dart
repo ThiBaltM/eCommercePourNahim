@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:td_ecommerce/models/ProduitsList.dart';
+import 'package:td_ecommerce/models/produit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Halloweens shop'),
+      home: MyHomePage(title: 'Halloweens shop'),
     );
   }
 }
@@ -36,26 +38,14 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  var Produits = [
+  var Produits = ProduitAPI('https://65b907e2b71048505a8a06c0.mockapi.io/api/prints');
 
-  ]
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,18 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => printProducts(widget.Produits),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+printProducts(ProduitAPI prod) async {
+  for(Produit p in await prod.GetProduits()){
+    print(p.title);
   }
 }
