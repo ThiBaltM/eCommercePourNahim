@@ -3,6 +3,8 @@ import 'package:td_ecommerce/models/ProduitsList.dart';
 import 'package:td_ecommerce/models/produit.dart';
 import 'package:td_ecommerce/ui/panier.dart';
 
+import 'models/ProduitList.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-
+  List<Produit> liste_prod = [];
   MyHomePage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -43,19 +45,16 @@ class MyHomePage extends StatefulWidget {
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
+
+  Future<void> loadProduits()async{
+    this.liste_prod = await this.Produits.getProduits();
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
 
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -73,45 +72,63 @@ class _MyHomePageState extends State<MyHomePage> {
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text("Art by chiara"),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
+        child: ListView.builder(
+          itemCount:  widget.liste_prod.length,
+          itemBuilder: (context, index) => InkWell(
+            onTap: (){
+              switch (widget.liste_prod[index].id){
+                case 2 :
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=> ProduitList()));
+                  break;
+              }
+            },
+            child: _buildRow(widget.liste_prod[index]),
+          ),
+          itemExtent: 180,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => printProducts(widget.Produits),
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-}
-printProducts(ProduitAPI prod) async {
-  for(Produit p in await prod.GetProduits()){
-    print(p.title);
+
+  _buildRow(Produit produit) {
+    return Container(
+      height: 180,
+      decoration: BoxDecoration(
+        //color: menu.color,
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+      ),
+      margin: EdgeInsets.all(4.0),
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Image.asset('assets/images/menus/${produit.image}',
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+
+          Container(
+            height: 50,
+            child: Center(
+              child: Text(
+                produit.title,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+
+
+    );
   }
+
+
 }

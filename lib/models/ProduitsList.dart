@@ -6,7 +6,7 @@ class ProduitAPI{
   String url;
   ProduitAPI(this.url);
 
-  Future<List<Produit>> GetProduits() async {
+  Future<List<Produit>> getProduits() async {
     final response = await http.get(Uri.parse(this.url));
 
     if (response.statusCode == 200) {
