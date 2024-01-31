@@ -77,7 +77,41 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _buil
+  _buildRow(Produit produit) {
+    return Container(
+      height: 180,
+      decoration: BoxDecoration(
+        //color: menu.color,
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+      ),
+      margin: EdgeInsets.all(4.0),
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Image.asset('assets/images/menus/${produit.image}',
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+
+          Container(
+            height: 50,
+            child: Center(
+              child: Text(
+                produit.title,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+
+
+    );
+  }
 
 
 }
