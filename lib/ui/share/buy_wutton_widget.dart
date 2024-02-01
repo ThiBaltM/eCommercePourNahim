@@ -23,7 +23,7 @@ class BuyButtonWidget extends StatelessWidget {
             ],
           ),
           onPressed: () {
-            print('Commande de pizza');
+            print('Commande de Tableau');
           },
         ),
       ],
