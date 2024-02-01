@@ -4,6 +4,7 @@ import 'package:td_ecommerce/models/produit.dart';
 import 'package:td_ecommerce/ui/panier.dart';
 
 import 'models/ProduitList.dart';
+import 'package:td_ecommerce/ui/produit_list.dart';
 
 void main() {
   runApp(const MyApp());
