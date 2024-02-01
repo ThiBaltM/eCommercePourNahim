@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:td_ecommerce/models/ProduitsList.dart';
+import 'package:td_ecommerce/models/ProduitAPI.dart';
 import 'package:td_ecommerce/models/produit.dart';
-import 'package:td_ecommerce/ui/produit_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +24,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  List<Produit> liste_prod = [];
+
+
   MyHomePage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -39,18 +39,16 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  var Produits = ProduitAPI('https://65b907e2b71048505a8a06c0.mockapi.io/api/prints');
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 
-  Future<void> loadProduits()async{
-    this.liste_prod = await this.Produits.getProduits();
-  }
+
 }
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  Future<List<Produit>> produitsFuture =ProduitAPI('https://65b907e2b71048505a8a06c0.mockapi.io/api/prints').getProduits();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,58 +57,51 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("Art by chiara"),
       ),
       body: Center(
-        child: ListView.builder(
-          itemCount:  widget.liste_prod.length,
-          itemBuilder: (context, index) => InkWell(
-            onTap: (){
-              switch (widget.liste_prod[index].id){
-                case 2 :
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=> ProduitList()));
-                  break;
-              }
-            },
-            child: _buildRow(widget.liste_prod[index]),
-          ),
-          itemExtent: 180,
-        ),
+        child:FutureBuilder<List<Produit>>(
+          future:produitsFuture,
+          builder: (context, snapshot){
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return const CircularProgressIndicator();
+            }else if(snapshot.hasData){
+              final produits = snapshot.data!;
+              return _buildProduitList(produits);
+            }else{
+              return const Text("Nous n'avons plus de produits pour le moment.",);
+            }
+          },
+        )
+
       ),
     );
   }
 
-  _buildRow(Produit produit) {
-    return Container(
-      height: 180,
-      decoration: BoxDecoration(
-        //color: menu.color,
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-      ),
-      margin: EdgeInsets.all(4.0),
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Image.asset('assets/images/menus/${produit.image}',
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-
-          Container(
-            height: 50,
-            child: Center(
-              child: Text(
+  _buildProduitList(List<Produit> produits){
+    return ListView.builder(
+      itemCount: produits.length,
+      itemBuilder: (context,index){
+        final produit = produits[index];
+        return Container(
+          color:Colors.grey.shade300,
+          margin:EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+          padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+          height: 100,
+          width: double.maxFinite,
+          child:Row(
+            children: [
+              Expanded(flex:1, child: Image.network(produit.image)),
+              SizedBox(width:10),
+              Expanded(flex:3,child:Text(
                 produit.title,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
                 ),
-              ),
-            ),
+              )),
+            ],
           ),
-        ],
-      ),
-
-
+        );
+      },
     );
   }
 
