@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:td_ecommerce/models/produit.dart';
 
-class ProduitAPI{
+class ProduitAPI {
   String url;
   ProduitAPI(this.url);
 
@@ -10,7 +10,8 @@ class ProduitAPI{
     final response = await http.get(Uri.parse(this.url));
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
+      // Utiliser Utf8Decoder pour interpréter la réponse en UTF-8
+      final List<dynamic> data = json.decode(Utf8Decoder().convert(response.bodyBytes));
       return data.map((json) =>
           Produit(
               int.parse(json['id']),

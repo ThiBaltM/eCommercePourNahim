@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:td_ecommerce/models/Cart.dart';
+import 'package:td_ecommerce/ui/style.dart';
 
 class Panier extends StatefulWidget {
+  final Cart _cart;
 
-  const Panier({super.key});
+  const Panier(this._cart, {super.key});
 
   @override
   State<Panier> createState() => _PanierState();
@@ -12,9 +15,12 @@ class Panier extends StatefulWidget {
 class _PanierState extends State<Panier> {
   @override
   Widget build(BuildContext context) {
+    double total = 0;
     return Scaffold(
+      backgroundColor: AppTheme.blackColor,
       appBar: AppBar(
         title: Text('Panier'),
+        backgroundColor: AppTheme.primaryColor,
       ),
       body: Column(
         children: [
@@ -24,9 +30,10 @@ class _PanierState extends State<Panier> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 20,
                 ),
-                itemCount: 3,
+                itemCount: widget._cart.countItems(),
                 itemBuilder: (context, index) {
-                  return _buildRow(context);
+                  total += widget._cart.getCartItem(index).produit.price;
+                  return _buildRow(widget._cart.getCartItem(index), context);
                 }
             ),
             /*child: ListView.builder(
@@ -39,8 +46,12 @@ class _PanierState extends State<Panier> {
           ),
           Row(
             children: [
-              Text('Total'),
-              Text('30 €'),
+              Text('Total : ',
+                style: AppTheme.priceTextStyle,
+              ),
+              Text('${total} €',
+                style: AppTheme.priceTextStyle,
+              ),
             ],
           ),
           Container(
@@ -56,35 +67,31 @@ class _PanierState extends State<Panier> {
     );
   }
 
-  _buildRow(BuildContext context) {
+  _buildRow(CartItem cartItem, BuildContext context) {
     return Card(
+      color: AppTheme.primaryColor,
       child:
       Column(
         children: [
           Text(
-            'Titre',
-            style: _style('titre'),
+            '${cartItem.produit.title} \n',
+            style: AppTheme.headingTextStyle,
           ),
-          Image.asset(
-            'assets/images/laNuitEtoilee.jpg',
-            height: 250,
+          Image.network(
+            cartItem.produit.image,
+            height: 350,
           ),
-          Text('Price'),
+          Text('Collection : ${cartItem.produit.collection} \n',
+            style: AppTheme.primaryTextStyle,
+          ),
+          Text('Size : ${cartItem.produit.size} \n',
+            style: AppTheme.primaryTextStyle,
+          ),
+          Text('${cartItem.produit.price.toString()} €',
+            style: AppTheme.priceTextStyle,
+          ),
         ],
       ),
-
     );
-  }
-
-  _style(arg) {
-    final base = const TextStyle();
-
-    if(arg == 'titre') {
-      final titre = base.copyWith(
-        fontSize: 22.0,
-        fontFamily: 'Montserrat',
-      );
-      return titre;
-    }
   }
 }
