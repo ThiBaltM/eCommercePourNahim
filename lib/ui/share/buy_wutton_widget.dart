@@ -1,13 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:td_ecommerce/models/Cart.dart';
+import 'package:td_ecommerce/ui/notify.dart';
 import 'package:td_ecommerce/ui/style.dart';
+import 'package:in_app_notification/in_app_notification.dart';
+import 'package:td_ecommerce/models/produit.dart';
 
 class BuyButtonWidget extends StatelessWidget {
-  const BuyButtonWidget({Key? key}): super(key:key);
+  final Cart _cart;
+  final Produit produit;
+
+  BuyButtonWidget(this._cart, this.produit, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return InAppNotification(
+      child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton(
@@ -25,10 +33,16 @@ class BuyButtonWidget extends StatelessWidget {
             ],
           ),
           onPressed: () {
-            //code à ajouter pour mettre au panier
+            this._cart.addArticle(produit);
+            InAppNotification.show(
+              child: NotificationBody(count: 2000, text: 'article ajouté',),
+              context: context,
+              //onTap: () => print('Notification tapped!'),
+            );
           },
         ),
       ],
+    ),
     );
   }
 }

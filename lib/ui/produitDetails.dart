@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:td_ecommerce/models/produit.dart';
 import 'package:td_ecommerce/ui/share/buy_wutton_widget.dart';
 import 'package:td_ecommerce/ui/style.dart';
+import 'package:td_ecommerce/models/Cart.dart';
 
 class ProduitDetails extends StatefulWidget {
   Produit produit;
-  ProduitDetails(this.produit, {Key? key}) : super(key: key);
+  final Cart _cart;
+  ProduitDetails(this.produit, this._cart, {super.key});
 
   @override
   State<ProduitDetails> createState() => _ProduitDetailsState();
@@ -56,7 +58,7 @@ class _ProduitDetailsState extends State<ProduitDetails> {
                     '${widget.produit.price} €',
                     style: AppTheme.priceTextStyle.copyWith(color: AppTheme.primaryColor),
                   ),
-                  BuyButtonWidget(),
+                  BuyButtonWidget(widget._cart, widget.produit),
                 ],
               ),
             ),

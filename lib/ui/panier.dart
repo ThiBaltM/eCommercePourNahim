@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:td_ecommerce/models/Cart.dart';
+import 'package:td_ecommerce/ui/notify.dart';
+import 'package:td_ecommerce/ui/paiement.dart';
 import 'package:td_ecommerce/ui/style.dart';
+import 'package:in_app_notification/in_app_notification.dart';
 
 class Panier extends StatefulWidget {
   final Cart _cart;
@@ -15,7 +18,8 @@ class Panier extends StatefulWidget {
 class _PanierState extends State<Panier> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return InAppNotification(
+      child: Scaffold(
       backgroundColor: AppTheme.blackColor,
       appBar: AppBar(
         title: Text('Panier'),
@@ -56,18 +60,22 @@ class _PanierState extends State<Panier> {
             child: ElevatedButton(
               child: Text('Valider'),
               onPressed: () {
-                print('Valider');
+                Navigator.push(
+                    context,
+                  MaterialPageRoute(builder: (context) => Paiement(widget._cart))
+                );
               },
             ),
           )
         ],
       ),
+    ),
     );
   }
 
   double? getSum(){
     for (int i = 0; i < widget._cart.countItems(); i++) {
-      return widget._cart.getCartItem(i).produit.price * widget._cart.getCartItem(i).quantity;
+      return widget._cart.getCartItem(i).produit.price;
     }
   }
 
@@ -79,6 +87,17 @@ class _PanierState extends State<Panier> {
       child:
       Column(
         children: [
+          InkWell(
+            child: Icon(Icons.delete_forever),
+            onTap: () {
+              widget._cart.removeArticle(cartItem.produit);
+              InAppNotification.show(
+                child: NotificationBody(count: 2000, text: 'article supprimé, actualisé la page',),
+                context: context,
+                //onTap: () => print('Notification tapped!'),
+              );
+            },
+          ),
           Text(
             '${cartItem.produit.title} \n',
             style: AppTheme.headingTextStyle,
