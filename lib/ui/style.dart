@@ -7,6 +7,7 @@ class AppTheme {
 
   static const TextStyle primaryTextStyle = TextStyle(
     fontFamily: 'Montserrat',
+    fontSize: 14.0,
   );
 
   static const TextStyle secondaryTextStyle = TextStyle(
@@ -16,14 +17,19 @@ class AppTheme {
   static const TextStyle headingTextStyle = TextStyle(
     fontFamily: 'Montserrat',
     fontWeight: FontWeight.bold,
-    fontSize: 24.0,
+    fontSize: 16.0,
     color: whiteColor,
+  );
+
+  static const TextStyle yellowPrimaryTextStyle = TextStyle(
+    fontFamily: 'Montserrat',
+    color: primaryColor,
   );
 
   static const TextStyle subHeadingTextStyle = TextStyle(
     fontFamily: 'Montserrat',
     fontWeight: FontWeight.bold,
-    fontSize: 18.0,
+    fontSize: 15.0,
     color: whiteColor,
   );
 
@@ -37,7 +43,7 @@ class AppTheme {
   static const TextStyle buttonTextStyle = TextStyle(
     fontFamily: 'Roboto',
     fontWeight: FontWeight.bold,
-    fontSize: 16.0,
+    fontSize: 12.0,
     color: whiteColor,
   );
 
