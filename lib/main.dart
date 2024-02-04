@@ -91,7 +91,15 @@ class _MyHomePageState extends State<MyHomePage> {
           width: double.maxFinite,
           child: Row(
             children: [
+              InkWell(
+                onTap: () {
+                  // Noha, ajoute le code pour lier ici
+                },
+                child: Icon(Icons.add_shopping_cart),
+              ),
+
               Expanded(flex: 1, child: Image.network(produit.image)),
+
               SizedBox(width: 10),
               Expanded(
                 flex: 3,
