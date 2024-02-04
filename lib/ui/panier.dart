@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:td_ecommerce/models/Cart.dart';
 import 'package:td_ecommerce/ui/style.dart';
-//test
+
 class Panier extends StatefulWidget {
   final Cart _cart;
 
