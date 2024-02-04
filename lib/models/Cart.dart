@@ -30,9 +30,7 @@ class Cart {
 
   void removeArticle(Produit produit) {
     int index = findCartItemIndex(produit.id);
-    if(index == -1) {
-      _items.removeAt(index);
-    }
+    _items.removeAt(index);
   }
 
   int findCartItemIndex(int id) {

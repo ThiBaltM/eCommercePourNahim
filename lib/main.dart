@@ -1,14 +1,17 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:td_ecommerce/models/ProduitAPI.dart';
 import 'package:td_ecommerce/models/produit.dart';
 import 'package:td_ecommerce/models/Cart.dart';
+import 'package:td_ecommerce/ui/notify.dart';
 import 'package:td_ecommerce/ui/panier.dart';
 
 import 'models/ProduitList.dart';
 import 'package:td_ecommerce/ui/produitDetails.dart';
 import 'package:td_ecommerce/ui/style.dart';
+import 'package:in_app_notification/in_app_notification.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,13 +23,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'eCommerce',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return InAppNotification(
+      child: MaterialApp(
+        title: 'In-App Notification Demo',
+        home: MyHomePage(title: 'is good'),
       ),
-      home: MyHomePage(title: 'Halloweens shop'),
     );
   }
 }
@@ -116,9 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   InkWell(
+                  InkWell(
                     onTap: () {
                       widget._cart.addArticle(produit);
+                      InAppNotification.show(
+                        child: NotificationBody(count: 2000, text: 'article ajouté',),
+                        context: context,
+                        //onTap: () => print('Notification tapped!'),
+                      );
                     },
                     child: Icon(Icons.add_shopping_cart),
                   ),
@@ -126,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProduitDetails(produit)));
+                          MaterialPageRoute(builder: (context) => ProduitDetails(produit, widget._cart)));
                     },
                     child: Icon(Icons.info),
                   ),
@@ -170,13 +176,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-
             ],
           ),
         );
       },
     );
   }
-
-
 }
