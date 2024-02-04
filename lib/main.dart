@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:td_ecommerce/models/ProduitAPI.dart';
 import 'package:td_ecommerce/models/produit.dart';
+import 'package:td_ecommerce/ui/style.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,11 +53,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.blackColor,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: AppTheme.primaryColor,
         title: Text("Art by chiara"),
       ),
-      body: Center(
+      body:
+        Center(
         child:FutureBuilder<List<Produit>>(
           future:produitsFuture,
           builder: (context, snapshot){
@@ -81,23 +84,48 @@ class _MyHomePageState extends State<MyHomePage> {
       itemBuilder: (context,index){
         final produit = produits[index];
         return Container(
-          color:Colors.grey.shade300,
+          color:AppTheme.primaryColor,
           margin:EdgeInsets.symmetric(vertical: 5,horizontal: 10),
           padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
           height: 100,
           width: double.maxFinite,
-          child:Row(
+          child: Row(
             children: [
-              Expanded(flex:1, child: Image.network(produit.image)),
-              SizedBox(width:10),
-              Expanded(flex:3,child:Text(
-                produit.title,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28,
+              Expanded(flex: 1, child: Image.network(produit.image)),
+              SizedBox(width: 10),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      produit.title,
+                      style: AppTheme.headingTextStyle,
+                    ),
+                  SizedBox(height: 5),
+                  Text(
+                  "Size: ${produit.size}",
+                  style: AppTheme.primaryTextStyle
+                  ),
+                  Text(
+                  "Collection: ${produit.collection}",
+                  style: AppTheme.primaryTextStyle
                 ),
-              )),
+                ],
+              ),
+        ),Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "${produit.price} €",
+                      style: AppTheme.priceTextStyle
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         );
