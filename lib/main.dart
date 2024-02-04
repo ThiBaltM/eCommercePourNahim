@@ -3,6 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:td_ecommerce/models/ProduitAPI.dart';
 import 'package:td_ecommerce/models/produit.dart';
+import 'package:td_ecommerce/models/Cart.dart';
+import 'package:td_ecommerce/ui/panier.dart';
+
+import 'models/ProduitList.dart';
 import 'package:td_ecommerce/ui/produitDetails.dart';
 import 'package:td_ecommerce/ui/style.dart';
 
@@ -28,9 +32,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  Cart _cart;
 
 
-  MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title}) : _cart = Cart();
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -58,6 +63,20 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: AppTheme.blackColor,
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Panier(widget._cart)),
+              );
+            },
+            icon: Icon(Icons.shopping_cart),
+          )
+        ],
+        // TRY THIS: Try changing the color here to a specific color (to
+        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+        // change color while the other colors stay the same.
         backgroundColor: AppTheme.primaryColor,
         title: Text("Art by chiara"),
       ),
@@ -94,6 +113,12 @@ class _MyHomePageState extends State<MyHomePage> {
           width: double.maxFinite,
           child: Row(
             children: [
+              InkWell(
+                onTap: () {
+                  widget._cart.addArticle(produit);
+                },
+                child: Icon(Icons.add_shopping_cart),
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -113,7 +138,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   ]
                 ),
-
 
               Expanded(flex: 1, child: Image.network(produit.image)),
 
