@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:td_ecommerce/models/ProduitAPI.dart';
 import 'package:td_ecommerce/models/produit.dart';
+import 'package:td_ecommerce/ui/produitDetails.dart';
 import 'package:td_ecommerce/ui/style.dart';
 
 void main() {
@@ -93,12 +94,26 @@ class _MyHomePageState extends State<MyHomePage> {
           width: double.maxFinite,
           child: Row(
             children: [
-              InkWell(
-                onTap: () {
-                  // Noha, ajoute le code pour lier ici
-                },
-                child: Icon(Icons.add_shopping_cart),
-              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   InkWell(
+                    onTap: () {
+                      // Noha, ajoute le code pour lier ici
+                    },
+                    child: Icon(Icons.add_shopping_cart),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProduitDetails(produit)));
+                    },
+                    child: Icon(Icons.info),
+                  ),
+                  ]
+                ),
+
 
               Expanded(flex: 1, child: Image.network(produit.image)),
 
@@ -112,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       produit.title,
                       style: AppTheme.headingTextStyle,
                     ),
-                  SizedBox(height: 5),
+                  SizedBox(height: 3),
                   Text(
                   "Size: ${produit.size}",
                   style: AppTheme.primaryTextStyle
@@ -121,6 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   "Collection: ${produit.collection}",
                   style: AppTheme.primaryTextStyle
                 ),
+
                 ],
               ),
         ),Expanded(
@@ -136,6 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
+
             ],
           ),
         );
