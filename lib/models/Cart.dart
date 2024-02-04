@@ -26,6 +26,8 @@ class Cart {
     }
   }
 
+  List<CartItem> getItems(){return _items;}
+
   void removeArticle(Produit produit) {
     int index = findCartItemIndex(produit.id);
     if(index == -1) {

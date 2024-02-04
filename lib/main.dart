@@ -113,18 +113,12 @@ class _MyHomePageState extends State<MyHomePage> {
           width: double.maxFinite,
           child: Row(
             children: [
-              InkWell(
-                onTap: () {
-                  widget._cart.addArticle(produit);
-                },
-                child: Icon(Icons.add_shopping_cart),
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                    InkWell(
                     onTap: () {
-                      // Noha, ajoute le code pour lier ici
+                      widget._cart.addArticle(produit);
                     },
                     child: Icon(Icons.add_shopping_cart),
                   ),

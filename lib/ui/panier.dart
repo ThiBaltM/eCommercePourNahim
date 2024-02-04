@@ -15,7 +15,6 @@ class Panier extends StatefulWidget {
 class _PanierState extends State<Panier> {
   @override
   Widget build(BuildContext context) {
-    double total = 0;
     return Scaffold(
       backgroundColor: AppTheme.blackColor,
       appBar: AppBar(
@@ -32,7 +31,6 @@ class _PanierState extends State<Panier> {
                 ),
                 itemCount: widget._cart.countItems(),
                 itemBuilder: (context, index) {
-                  total += widget._cart.getCartItem(index).produit.price;
                   return _buildRow(widget._cart.getCartItem(index), context);
                 }
             ),
@@ -49,7 +47,7 @@ class _PanierState extends State<Panier> {
               Text('Total : ',
                 style: AppTheme.priceTextStyle,
               ),
-              Text('${total} €',
+              Text('${this.getSum()} €',
                 style: AppTheme.priceTextStyle,
               ),
             ],
@@ -67,8 +65,16 @@ class _PanierState extends State<Panier> {
     );
   }
 
+  double? getSum(){
+    for (int i = 0; i < widget._cart.countItems(); i++) {
+      return widget._cart.getCartItem(i).produit.price * widget._cart.getCartItem(i).quantity;
+    }
+  }
+
   _buildRow(CartItem cartItem, BuildContext context) {
+
     return Card(
+      margin: EdgeInsets.all(1.0),
       color: AppTheme.primaryColor,
       child:
       Column(
@@ -79,7 +85,7 @@ class _PanierState extends State<Panier> {
           ),
           Image.network(
             cartItem.produit.image,
-            height: 350,
+            height: 250,
           ),
           Text('Collection : ${cartItem.produit.collection} \n',
             style: AppTheme.primaryTextStyle,
